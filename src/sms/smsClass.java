@@ -10,7 +10,7 @@ public class smsClass {
 	
 	
 
-	private static String APIkey = "934423642bf3a69765d0185ec2159dd5f6b3173d";
+	private static String APIkey = "";
 	
 	
 	public static void sendMessage(String message , String from , String To) throws Exception {
