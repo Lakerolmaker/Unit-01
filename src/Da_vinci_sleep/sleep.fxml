@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="451.0" maxWidth="437.0" minHeight="-Infinity" minWidth="228.0" prefHeight="334.0" prefWidth="228.0" rotate="-0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Da_vinci_sleep.sleepCalulator">
+   <children>
+      <Button layoutX="34.0" layoutY="282.0" mnemonicParsing="false" onAction="#calculate" prefHeight="33.0" prefWidth="160.0" text="Calculate" />
+      <TitledPane expanded="false" layoutX="13.0" layoutY="60.0" text="Normal sleep scedule" translateZ="1.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="normalhours" layoutX="5.0" layoutY="15.0" prefHeight="30.0" prefWidth="190.0" promptText="Hours per night asleep" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane expanded="false" layoutX="13.0" layoutY="18.0" text="Da vinci sleep scedule">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="daysUsingDavinci" layoutX="5.0" layoutY="15.0" prefHeight="30.0" prefWidth="190.0" promptText="Days using sleep scedule" />
+                  <TextField fx:id="davinciHoursAwake" layoutX="5.0" layoutY="55.0" prefHeight="30.0" prefWidth="190.0" promptText="Hours awake" />
+                  <TextField fx:id="davinciMinutesAleep" layoutX="5.0" layoutY="95.0" prefHeight="30.0" prefWidth="190.0" promptText="Minutes asleep" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+   </children>
+</Pane>
