@@ -56,7 +56,7 @@ public class Main {
 
 		//programs_console.consoleMenu.start();
 		
-		GameEgine.GameEngine.startProgram(args);
+		GameEngine.GameEngine.startProgram(args);
 		
 		//: TODO : add a reveal to the label 
 		

@@ -1,4 +1,4 @@
-package GameEgine;
+package GameEngine;
 
 public class CollisionData {
 

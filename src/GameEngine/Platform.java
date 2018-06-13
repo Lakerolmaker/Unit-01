@@ -1,4 +1,4 @@
-package GameEgine;
+package GameEngine;
 
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;

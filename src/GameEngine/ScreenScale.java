@@ -1,4 +1,4 @@
-package GameEgine;
+package GameEngine;
 
 import JackeLibrary.$;
 import JackeLibrary.console;

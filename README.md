@@ -5,6 +5,6 @@ If you feel the same way then feel free to use it. There are no real reason for 
 
 I made all these programs in a single project as it was easier for me to build upon what i had allready made.
 
-** Note: some of these programs have their own reposetory that i made awhile ago, these are usaully not up to date.
+#### Note: some of these programs have their own reposetory that i made awhile ago, these are usaully not up to date.
 
-
+***

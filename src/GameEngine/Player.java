@@ -1,4 +1,4 @@
-package GameEgine;
+package GameEngine;
 
 
 import com.sun.media.jfxmediaimpl.platform.Platform;
@@ -152,7 +152,7 @@ public class Player {
 	
 	private void goingToLand() {
 		
-		for(GameEgine.Platform platformObj: gameobject.platforms){
+		for(GameEngine.Platform platformObj: gameobject.platforms){
 			
 			Rectangle platform =  platformObj.getPlatform();
 			
@@ -196,7 +196,7 @@ public class Player {
 	    
 		CollisionData updatedCollision = new CollisionData();
 		
-		for(GameEgine.Platform platformObj: gameobject.platforms){
+		for(GameEngine.Platform platformObj: gameobject.platforms){
 			
 			Rectangle platform =  platformObj.getPlatform();
 			

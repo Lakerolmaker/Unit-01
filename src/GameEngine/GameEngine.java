@@ -1,4 +1,4 @@
-package GameEgine;
+package GameEngine;
 import java.util.ArrayList;
 
 import JackeLibrary.*;
