@@ -1,16 +1,15 @@
-/.DS_Store
 /APP/
 /Da_vinci_sleep/
 /Functions/
-/GameEgine/
-/JackeLibrary/
-/TCP/
+/GameEngine/
+/LakerLibrary/
+/TCP (1)/
 /UILibrary/
 /application/
 /consoleWindow/
 /encryption/
-/icon.ico
 /images/
 /programs/
 /programs_console/
 /sms/
+/TCP/

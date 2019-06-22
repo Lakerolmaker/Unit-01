@@ -1,6 +1,6 @@
 package programs;
 
-import JackeLibrary.*;
+import LakerLibrary.*;
 import UILibrary.UI;
 
 public class Temperature {

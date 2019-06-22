@@ -1,26 +1,25 @@
 package TCP;
 
-import java.io.DataInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /*
  * 
- *  A class for reciveing a file over TCP
+ *  A class for receiving a file over TCP
  *  
- *  Note . Not implemeted
- * 
- * Written by Jacob Olsson
  * 
  * 
  */
 
 public class FileServer extends Thread {
-	
+
 	private ServerSocket ss;
-	
+	private static Socket clientSock;
+
 	public FileServer(int port) {
 		try {
 			ss = new ServerSocket(port);
@@ -28,41 +27,43 @@ public class FileServer extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void run() {
 		while (true) {
 			try {
-				Socket clientSock = ss.accept();
-				saveFile(clientSock);
+				clientSock = ss.accept();
+				saveFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private void saveFile(Socket clientSock) throws IOException {
-		DataInputStream dis = new DataInputStream(clientSock.getInputStream());
-		FileOutputStream fos = new FileOutputStream("testfile.jpg");
-		byte[] buffer = new byte[4096];
-		
-		int filesize = 15123; // Send file size in separate msg
-		int read = 0;
-		int totalRead = 0;
-		int remaining = filesize;
-		while((read = dis.read(buffer, 0, Math.min(buffer.length, remaining))) > 0) {
-			totalRead += read;
-			remaining -= read;
-			System.out.println("read " + totalRead + " bytes.");
-			fos.write(buffer, 0, read);
+	private static void saveFile() throws IOException {
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		InputStream is = null;
+		try {
+			is = clientSock.getInputStream();
+			fos = new FileOutputStream("C:\\Users\\duyka\\lmao.zip");
+			bos = new BufferedOutputStream(fos);
+			int c = 0;
+			byte[] b = new byte[2048];
+			while ((c = is.read(b)) > 0) {
+				bos.write(b, 0, c);
+			}
+		} finally {
+			if (is != null)
+				is.close();
+			if (bos != null)
+				bos.close();
 		}
-		
-		fos.close();
-		dis.close();
 	}
-	
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws IOException {
 		FileServer fs = new FileServer(1988);
-		fs.start();
+		fs.run();
+
 	}
 
 }

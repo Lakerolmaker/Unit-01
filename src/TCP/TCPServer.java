@@ -1,5 +1,10 @@
 package TCP;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+
 /*
  * 
  * Modified code from https://gist.github.com/rostyslav
@@ -8,13 +13,19 @@ package TCP;
  * 
  */
 
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.ClosedChannelException;
@@ -25,9 +36,13 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.zip.ZipFile;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
@@ -35,147 +50,148 @@ import javafx.beans.value.ObservableValue;
 
 /*
  * 
- *  A class for the servser side of the TCP connection
+ *  A class for the server side of the TCP connection
  * 
- * Written by Jacob Olsson
- * 
- * 
+ *
  */
 
 public class TCPServer {
-	
-	public Selector sel = null;
-    public ServerSocketChannel server = null;
-    public SocketChannel socket = null;
-    String result = null;
 
-    public void initializeServer(String hostname , int port) throws Exception{
-        sel = Selector.open();
-        server = ServerSocketChannel.open();
-        server.configureBlocking(false);
-        InetSocketAddress isa = new InetSocketAddress(hostname, port);
-        server.socket().bind(isa);
-        System.out.println("\r\nRunning Server:" + 
-                " Host=" + hostname + 
-                " Port=" + port);
-    }
-    
-    public void initializeServer() throws Exception{
-        sel = Selector.open();
-        server = ServerSocketChannel.open();
-        server.configureBlocking(false);
-        InetAddress ia = InetAddress.getLocalHost();
-        int port = findFreePort();
-        InetSocketAddress isa = new InetSocketAddress(ia, port);
-        server.socket().bind(isa);
-        System.out.println("\r\nRunning Server:" + 
-                " Host=" + ia.getHostAddress() + 
-                " Port=" + port);
-    }
+	public ServerSocket server = null;
+	public PostClass post = new PostClass();
+	ZIP zip = new ZIP();
+	public boolean showOutput = false;
 
-    public void start(RunnableArg<String> invocation) throws Exception {
-       Runnable serverCode = new Runnable() {
+	public void initializeServer() throws Exception {
+		int port = findFreePort();
+		InetAddress adress = InetAddress.getLocalHost();
+		server = new ServerSocket(port, 10, adress);
+	}
 
-		@Override
-		public void run() {
-			
-			try {
-				 // wait for a connection
-				SelectionKey acceptKey = server.register(sel, SelectionKey.OP_ACCEPT);
-								
-		        while (acceptKey.selector().select() > 0) {
+	public String getIp() {
+		return server.getInetAddress().getHostAddress();
+	}
 
-		            Set readyKeys = sel.selectedKeys();
-		            Iterator it = readyKeys.iterator();
+	public int getPort() {
+		return server.getLocalPort();
+	}
 
-		            		while (it.hasNext()) {
-		                SelectionKey key = (SelectionKey) it.next();
-		                it.remove();
+	public void start(RunnableArg<String> invocation) throws Exception {
 
-		                if (key.isAcceptable()) {
-		                    ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
-		                    socket = (SocketChannel) ssc.accept();
-		                    socket.configureBlocking(false);
-		                    SelectionKey another = socket.register(sel, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-		                }
-		                
-		                if (key.isReadable()) {
-		                    String ret = readMessage(key);
-		                    if (ret.length() > 0) {
-		                    
-		                       invocation.setArg(ret);
-		                       invocation.run();
-		                    }
-		                }
-		                
-		                if (key.isWritable()) {
-		                    String ret = readMessage(key);
-		                    socket = (SocketChannel) key.channel();
-		                    if (result.length() > 0) {
-		                    	System.out.println("Message recived : " + ret);
-		                    }
-		                }
-		            }
-		        }
-		        
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		Runnable serverCode = new Runnable() {
+
+			@Override
+			public void run() {
+
+				while (true) {
+
+					try {
+
+						Socket connectionSocket = server.accept();
+
+						InputStream strm = connectionSocket.getInputStream();
+						InputStreamReader in = new InputStreamReader(strm);
+						BufferedReader br = new BufferedReader(in);
+
+						String dataString = br.readLine();
+						if (showOutput)
+							System.out.println(
+									"TCP-Server - Recived : " + dataString.getBytes().length + " bytes of data");
+
+						invocation.setArg(dataString);
+						invocation.run();
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
 			}
-	        
-			
+
+		};
+
+		new Thread(serverCode).start();
+
+		System.out.println("TCP text-server running on - " + this.getIp() + ":" + this.getPort());
+	}
+
+	public void startFileServer(RunnableArg<File> invocation) {
+
+		Runnable serverCode = new Runnable() {
+
+			@Override
+			public void run() {
+
+				while (true) {
+					Socket socket;
+					try {
+						
+						socket = server.accept();
+						
+						File file = saveFile(socket);
+
+						invocation.setArg(file);
+						invocation.run();
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
+		};
+
+		new Thread(serverCode).start();
+
+		System.out.println("TCP file-server running on - " + this.getIp() + ":" + this.getPort());
+
+	}
+
+	public File savedir(Socket socket) throws Exception {
+		String CurrentDir = System.getProperty("user.dir");
+		String newFilePath = CurrentDir + "/newfile.zip";
+		File file = new File(newFilePath);
+
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		InputStream is = null;
+		try {
+			is = socket.getInputStream();
+			fos = new FileOutputStream(file);
+			bos = new BufferedOutputStream(fos);
+			int c = 0;
+			byte[] b = new byte[2048];
+			while ((c = is.read(b)) > 0) {
+				bos.write(b, 0, c);
+			}
+		} finally {
+			if (is != null)
+				is.close();
+			if (bos != null)
+				bos.close();
 		}
-        
-       };
-        
-        new Thread(serverCode).start();
-    }
+		return file;
 
-    public void writeMessage(SocketChannel socket, String ret) {
+	}
 
-        if (ret.equals("quit") || ret.equals("shutdown")) {
-            return;
-        }
-        File file = new File(ret);
-        try {
+	public File saveFile(Socket socket) throws Exception {
+		BufferedInputStream in = new BufferedInputStream(socket.getInputStream());
+		String fileName = null;
+		File newFile = null;
+		try (DataInputStream d = new DataInputStream(in)) {
+			fileName = d.readUTF();
+			newFile = new File(fileName);
+			Files.copy(d, Paths.get(newFile.getPath()));
+		} catch (Exception e) {
+		}
+		return newFile;
+	}
 
-            RandomAccessFile rdm = new RandomAccessFile(file, "r");
-            FileChannel fc = rdm.getChannel();
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            fc.read(buffer);
-            buffer.flip();
-
-            Charset set = Charset.forName("UTF-8");
-            CharsetDecoder dec = set.newDecoder();
-            CharBuffer charBuf = dec.decode(buffer);
-            System.out.println(charBuf.toString());
-            buffer = ByteBuffer.wrap((charBuf.toString()).getBytes());
-            int nBytes = socket.write(buffer);
-            System.out.println("nBytes = " + nBytes);
-            result = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
- 
-    public String readMessage(SelectionKey key) {
-        int nBytes = 0;
-        socket = (SocketChannel) key.channel();
-        ByteBuffer buf = ByteBuffer.allocate(1024);
-        try {
-            nBytes = socket.read(buf);
-            buf.flip();
-            Charset charset = Charset.forName("UTF-8");
-            CharsetDecoder decoder = charset.newDecoder();
-            CharBuffer charBuffer = decoder.decode(buf);
-            result = charBuffer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-    
 	private static int findFreePort() {
 		ServerSocket socket = null;
 		try {
@@ -188,7 +204,7 @@ public class TCPServer {
 				// Ignore IOException on close()
 			}
 			return port;
-		} catch (IOException e) { 
+		} catch (IOException e) {
 		} finally {
 			if (socket != null) {
 				try {
@@ -199,8 +215,24 @@ public class TCPServer {
 		}
 		throw new IllegalStateException("Could not find a free TCP/IP port to start embedded Jetty HTTP Server on");
 	}
-	
-	
-	
-	
+
+	public void addToNetwork(String name) throws Exception {
+
+		String ip = this.server.getInetAddress().getHostAddress();
+		String port = String.valueOf(this.server.getLocalPort());
+
+		post.addPostParamter("action", "insert");
+		post.addPostParamter("name", name);
+		post.addPostParamter("ip", ip);
+		post.addPostParamter("port", port);
+
+		post.URL = "http://api.lakerolmaker.com/network_lookup.php";
+
+		post.post();
+	}
+
+	public void showOutput(Boolean value) {
+		this.showOutput = value;
+	}
+
 }

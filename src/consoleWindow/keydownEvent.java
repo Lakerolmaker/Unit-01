@@ -1,6 +1,6 @@
 package consoleWindow;
 
-import JackeLibrary.console;
+import LakerLibrary.console;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCode;

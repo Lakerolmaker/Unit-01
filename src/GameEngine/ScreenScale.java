@@ -1,7 +1,7 @@
 package GameEngine;
 
-import JackeLibrary.$;
-import JackeLibrary.console;
+import LakerLibrary.$;
+import LakerLibrary.console;
 
 public class ScreenScale {
 	

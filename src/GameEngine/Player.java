@@ -1,9 +1,6 @@
 package GameEngine;
 
-
-import com.sun.media.jfxmediaimpl.platform.Platform;
-
-import JackeLibrary.console;
+import LakerLibrary.console;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -152,7 +149,7 @@ public class Player {
 	
 	private void goingToLand() {
 		
-		for(GameEngine.Platform platformObj: gameobject.platforms){
+		for(Platform platformObj: gameobject.platforms){
 			
 			Rectangle platform =  platformObj.getPlatform();
 			
@@ -196,7 +193,7 @@ public class Player {
 	    
 		CollisionData updatedCollision = new CollisionData();
 		
-		for(GameEngine.Platform platformObj: gameobject.platforms){
+		for(Platform platformObj: gameobject.platforms){
 			
 			Rectangle platform =  platformObj.getPlatform();
 			
@@ -286,15 +283,15 @@ public class Player {
 				}else if(type == 7) {
 					gameobject.levelData.levelDown();
 					this.setPosition( X , this.startY);
-					gameobject.GameLayout();
+					gameobject.Generate_GameLayout();
 				}else if(type == 8) {
 					gameobject.levelData.levelLeft();
 					this.setPosition( gameobject.scale.screenWidth - this.width, Y);
-					gameobject.GameLayout();
+					gameobject.Generate_GameLayout();
 				}else if(type == 9) {
 					gameobject.levelData.levelRight();
 					this.setPosition( this.startX , Y);
-					gameobject.GameLayout();
+					gameobject.Generate_GameLayout();
 				}
 	
 			}

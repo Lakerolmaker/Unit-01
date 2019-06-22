@@ -5,8 +5,9 @@ import java.util.Arrays;
 
 import com.sun.org.apache.xpath.internal.operations.Number;
 
-import JackeLibrary.$;
-import JackeLibrary.console;
+import LakerLibrary.$;
+import LakerLibrary.console;
+import consoleWindow.runnableConsole;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,102 +25,104 @@ public class fileDeleter {
 		
 	public static void deleteLowerThan() {
 
-		console.external.openStandalone(()->{
-	
-			console.external.print("");
-			console.external.print("File deleter V 1.3 ");
-			console.external.printLine();
+		console.external.openStandalone(new runnableConsole() {
 			
-			console.external.print("");
-			console.external.print("Saved profiles : ");
-			console.external.print("----------------- ");
-			console.external.print("Profile 1 ( /Reactions Gifs | Limit : 8 MB ) ");
-			console.external.print("");
-			console.external.print("");
-			
-			console.external.print("Enter path to delete OR number of saved profile:");
-			
-			console.external.print(">");
-			console.external.saveText();
-			
-			console.external.addKeydownEvent( "deleteLowerThan_Main", KeyCode.ENTER, ()-> {
+			@Override
+			public void run() {
+				console.external.print("");
+				console.external.print("File deleter V 1.3 ");
+				console.external.printLine();
 				
-				String input = "";
-				if(on) {
-					input = console.external.getInput();
-				}
+				console.external.print("");
+				console.external.print("Saved profiles : ");
+				console.external.print("----------------- ");
+				console.external.print("Profile 1 ( /Reactions Gifs | Limit : 8 MB ) ");
+				console.external.print("");
+				console.external.print("");
 				
-				if((input != "") && (index == 1)) {
+				console.external.print("Enter path to delete OR number of saved profile:");
+				
+				console.external.print(">");
+				console.external.saveText();
+				
+				console.external.addKeydownEvent( "deleteLowerThan_Main", KeyCode.ENTER, ()-> {
+					
+					String input = "";
+					if(on) {
+						input = console.external.getInput();
+					}
+					
+					if((input != "") && (index == 1)) {
 
-					if($.number.isInt(input) == false) {
-						path = input;	
-						console.external.print("Enter the lowest size that shall not be deleted :");
-						index++;
-					}else {
-						int value = $.number.toInt(input);
-						if(value == 1) {
-							path = "/Users/jacobolsson/OneDrive/Reaction gifs";
-							
+						if($.number.isInt(input) == false) {
+							path = input;	
 							console.external.print("Enter the lowest size that shall not be deleted :");
 							index++;
 						}else {
-							console.external.print("No such profile found!");
+							int value = $.number.toInt(input);
+							if(value == 1) {
+								path = "/Users/jacobolsson/OneDrive/Reaction gifs";
+								
+								console.external.print("Enter the lowest size that shall not be deleted :");
+								index++;
+							}else {
+								console.external.print("No such profile found!");
+							}
+							
 						}
 						
-					}
-					
-				}else if((input != "") && (index == 2)) {
-					
-					try {
+					}else if((input != "") && (index == 2)) {
 						
-						long value = Long.valueOf(input);
+						try {
+							
+							long value = Long.valueOf(input);
+							
+							if(value >= 0){
+								mb = value;
+								deleteLimit = value * 1048576;
+								console.external.print("");
+								console.external.print("Path : " + path);
+								console.external.print("Delete limit : " + mb + "MB");
+								console.external.print("Do you wish to continue ( Y/N) ");
+								index++;
+							}else {
+								console.external.error("Number must be non negative");
+							}	
+						} catch (Exception e) {
+							console.external.error("Not a number");
+							console.logg(e);
+						}
 						
-						if(value >= 0){
-							mb = value;
-							deleteLimit = value * 1048576;
-							console.external.print("");
-							console.external.print("Path : " + path);
-							console.external.print("Delete limit : " + mb + "MB");
-							console.external.print("Do you wish to continue ( Y/N) ");
-							index++;
+					}else if((input != "") && (index == 3)) {
+						if(input.toUpperCase().equals("Y")) {
+							deleteStart();
+							console.external.removeEnterEvent("deleteLowerThan_Main");
 						}else {
-							console.external.error("Number must be non negative");
-						}	
-					} catch (Exception e) {
-						console.external.error("Not a number");
-						console.logg(e);
+							console.external.removeEnterEvent("deleteLowerThan_Main");
+						}
+						programs_console.consoleMenu.turnon();
+						console.external.print("");
+						console.external.print("Shuting down File deleter");
+						console.external.print(">");
+						turnoff();
 					}
 					
-				}else if((input != "") && (index == 3)) {
-					if(input.toUpperCase().equals("Y")) {
-						deleteStart();
-						console.external.removeEnterEvent("deleteLowerThan_Main");
-					}else {
-						console.external.removeEnterEvent("deleteLowerThan_Main");
-					}
-					programs_console.consoleMenu.turnon();
-					console.external.print("");
-					console.external.print("Shuting down File deleter");
-					console.external.print(">");
-					turnoff();
-				}
-				
 
-				if(on) {
-					console.external.print(">");
-					console.external.saveText();
-				}
+					if(on) {
+						console.external.print(">");
+						console.external.saveText();
+					}
+					
+					if(index == -2) {
+						turnon();
+						index = 1;
+					}
+					
+				});
+
 				
-				if(index == -2) {
-					turnon();
-					index = 1;
-				}
-				
-			});
-			
-			
-			
-		});
+			}
+		});		
 			
 	}
 	

@@ -30,11 +30,12 @@ import org.apache.commons.net.io.CopyStreamListener;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
-import Functions.EnglishNumberToWords;
-import JackeLibrary.$;
-import JackeLibrary.console;
+import LakerLibrary.$;
+import LakerLibrary.EnglishNumberToWords;
+import LakerLibrary.console;
 import consoleWindow.consoleFX;
 import consoleWindow.consoleStyle;
+import consoleWindow.runnableConsole;
 import encryption.AES_crypt;
 import encryption.B64_crypt;
 import encryption.MD5_crypt;
@@ -100,111 +101,116 @@ public class consoleMenu {
 		createSavefolder();
 		loadSave();
 		
-		console.external.openStandalone(()->{
+		console.external.openStandalone(new runnableConsole() {
 			
-			path = System.getProperty("user.dir");
-			
+			@Override
+			public void run() {
+				path = System.getProperty("user.dir");
+				
 
-			console.external.print("");
-			console.external.print("Lakerolmakers console  V 3.4");
-			console.external.printLine();
-			console.external.print("");
-			console.external.print("To list all commands type help.");
-			printCursor();
+				console.external.print("");
+				console.external.print("Lakerolmakers console  V 3.4");
+				console.external.printLine();
+				console.external.print("");
+				console.external.print("To list all commands type help.");
+				printCursor();
+				
+				console.external.addKeydownEvent( "consoleMenuMain", KeyCode.ENTER , ()-> {
+					String input = "";
+					input = console.external.getInput();
+					
+					if(on) {
+					
+						if(index == 0) {
+							switch (getFirstArg(input)) {
+							case "cd":
+								changeDir(input);
+								break;
+							case "read":
+								readFile(input);
+								break;
+							case "duplicate":
+								duplicateFile(input);
+								break;
+							case "edit":
+								editFile(input);
+								break;
+							case "ls":
+								PrintPath(true);
+								break;
+							case "dir":
+								PrintPath(false);
+								break;
+							case "path":
+								print(path);
+								break;
+							case "deleter":
+								turnoff();
+								programs_console.fileDeleter.deleteLowerThan();
+								break;
+							case "help":
+								printHelp(input);
+								break;
+							case "?":
+								printHelp(input);
+								break;
+							case "encrypt":
+								encrypt(input);
+								break;
+							case "decrypt":
+								decrypt(input);
+								break;
+							case "tree":
+								tree(input);
+								break;
+							case "color":
+								color(input);
+								break;
+							case "fontSize":
+								fontSize(input);
+								break;
+							case "speak":
+								speak(input);
+								break;
+							case "matrix":
+								matrix();
+								break;
+							case "hackermode":
+								hackerMode();
+								break;
+							case "ftp":
+									ftpControler(input);
+								break;
+							default:
+								if(input.equals("") == false) {
+									console.external.print("Command not found : '" + input + "'");
+								}
+								break;
+							}//: end switch
+							
+						}//: end index 0
+						// edit mode 1
+						else if(index == 1) {
+							
+						}
 			
-			console.external.addKeydownEvent( "consoleMenuMain", KeyCode.ENTER , ()-> {
-				String input = "";
-				input = console.external.getInput();
-				
-				if(on) {
-				
-					if(index == 0) {
-						switch (getFirstArg(input)) {
-						case "cd":
-							changeDir(input);
-							break;
-						case "read":
-							readFile(input);
-							break;
-						case "duplicate":
-							duplicateFile(input);
-							break;
-						case "edit":
-							editFile(input);
-							break;
-						case "ls":
-							PrintPath(true);
-							break;
-						case "dir":
-							PrintPath(false);
-							break;
-						case "path":
-							print(path);
-							break;
-						case "deleter":
-							turnoff();
-							programs_console.fileDeleter.deleteLowerThan();
-							break;
-						case "help":
-							printHelp(input);
-							break;
-						case "encrypt":
-							encrypt(input);
-							break;
-						case "decrypt":
-							decrypt(input);
-							break;
-						case "tree":
-							tree(input);
-							break;
-						case "color":
-							color(input);
-							break;
-						case "fontSize":
-							fontSize(input);
-							break;
-						case "speak":
-							speak(input);
-							break;
-						case "matrix":
-							matrix();
-							break;
-						case "hackermode":
-							hackerMode();
-							break;
-						case "ftp":
-								ftpControler(input);
-							break;
-						default:
-							if(input.equals("") == false) {
-								console.external.print("Command not found : '" + input + "'");
-							}
-							break;
-						}//: end switch
-						
-					}//: end index 0
-					// edit mode 1
-					else if(index == 1) {
-						
+						commandHistory_INDEX = -1;
+						printCursor();
+					
 					}
-		
-					commandHistory_INDEX = -1;
-					printCursor();
+					
+					saveHistory(input);
+					
+				});
 				
-				}
-				
-				saveHistory(input);
-				
-			});
-			
-			addKeyNormalBinds();
-			addStaticKeyBinds();
+				addKeyNormalBinds();
+				addStaticKeyBinds();
 
+				
+			}
+		
 		});
-		
-		
-		
-		
+			
 	}
 	
 	private static void printHelp(String input) {
@@ -284,7 +290,7 @@ public class consoleMenu {
 			console.external.print("---------------------");
 			console.external.print("Progrmas : ");
 			console.external.print("");
-			console.external.print("help      \t\t List all avalible commands");
+			console.external.print("help | ?  \t\t List all avalible commands");
 			console.external.print("deleter   \t\t Removes file over a specific size");
 			console.external.print("ls        \t\t prints all the files in the current path");
 			console.external.print("dir       \t\t prints all the directories");
@@ -620,14 +626,17 @@ public class consoleMenu {
 		if(includeFiles == true ) {
 			for (File file : listOfFiles) {
 				
-			    if ((	file.isHidden() != true)  && (includeFiles == true)) {
-			    		if(toPrint == "") {
-			    		  	toPrint += (file.getName() + "\t\t");
-			    		}else {
-			    			toPrint += (file.getName() + "\t\t");
-			    			console.external.print(toPrint);
-			    			toPrint = "";
-			    		}
+			    if ((file.isHidden() != true)  && (includeFiles == true)) {
+			    	
+			    	toPrint = file.getName();
+			    	
+			    	long fileSize = file.length();
+			    	toPrint += "\t " + formatSize(fileSize);
+			    	
+
+			    	
+			    	console.external.print(toPrint);
+
 			    }	
 			}
 		}else {
@@ -645,29 +654,27 @@ public class consoleMenu {
 	} catch (Exception e) {}
 
 	}
+	
+	public static String formatSize(long v) {
+	    if (v < 1024) return v + " B";
+	    int z = (63 - Long.numberOfLeadingZeros(v)) / 10;
+	    return String.format("%.1f %sB", (double)v / (1L << (z*10)), " KMGTPE".charAt(z));
+	}
 
 	private static void speak(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
 
 		//$.api.TTS(content);
-		console.external.print("1");
 		Voice voice;
-		console.external.print("2");
 		VoiceManager vm = VoiceManager.getInstance();
-		console.external.print("3");
 		voice = vm.getVoice("kevin");
-		console.external.print("4");
 		try {
-			console.external.print(voice.toString());
-
+		console.external.print(voice.toString());
 		voice.allocate();
-		console.external.print("5");
-		
-			voice.speak(content);
-			console.external.print("6");
+		voice.speak(content);
 		} catch (Exception e) {
-			console.external.print(e.toString());
+			console.logg(e.toString());
 		}
 	}
 		

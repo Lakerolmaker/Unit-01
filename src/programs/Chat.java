@@ -1,11 +1,11 @@
 package programs;
 
-import JackeLibrary.*;
+import static LakerLibrary.Input.*;
+
+import LakerLibrary.*;
 import UILibrary.UI;
 import UILibrary.border;
 import javafx.scene.paint.Color;
-
-import static JackeLibrary.Input.*;
 
 
 public class Chat {

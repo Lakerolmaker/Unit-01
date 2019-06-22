@@ -1,7 +1,7 @@
 package GameEngine;
 import java.util.ArrayList;
 
-import JackeLibrary.*;
+import LakerLibrary.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -34,21 +34,28 @@ public class GameEngine extends Application {
 	
 	public void start(Stage window) 
 	{
-				
-		GameLayout();
+		//: initialize the screen.
+		Scene scene = new Scene(ApplicationRoot , scale.screenWidth , scale.screenHeight );
+		window.setTitle("Game Engine Test");
+		window.setScene(scene);
+		window.setFullScreen(true);
+		window.show();
 		
+		console.logg(levelData.Level1.map.length);
+		console.logg(levelData.Level1.map[0].length);
+		
+		Platform format  = new Platform(this);
+		
+		Generate_GameLayout();
+		
+		//: Creates the player 
+		player = new Player( 20 , 20 , 20 , 20 , Color.WHITE , this);
+		addPlayer(player);
+	
+		//: initializes the clock for the fps counter.
 		$.time.clock.start();
 		
-		player = new Player( 20 , 20 , 20 , 20 , Color.WHITE , this);
-
-		GameRoot.getChildren().add(player.getPlayer());
-
-		Scene scene = new Scene(ApplicationRoot , scale.screenWidth , scale.screenHeight );
-
-		window.setTitle("Game");
-		window.setScene(scene);
-		window.show();
-
+		//: creates the update cycle which updates the game
 		Timeline tl = new Timeline(new KeyFrame(Duration.millis(speed), e->{
 
 			player.update();
@@ -71,6 +78,11 @@ public class GameEngine extends Application {
 
 	}
 	
+	//: adds the player to the screen
+	public void addPlayer(Player player) {
+		GameRoot.getChildren().add(player.getPlayer());
+	}
+	
 	//: clear all platforms
 	public void clearStage() {
 		ApplicationRoot.getChildren().clear();
@@ -88,10 +100,10 @@ public class GameEngine extends Application {
 	public void resetGame() {
 		levelData.X = 0;
 		levelData.Y = 0;
-		GameLayout();
+		Generate_GameLayout();
 	}
 	
-	public void GameLayout(){
+	public void Generate_GameLayout(){
 		
 		clearStage();
 		
@@ -121,19 +133,19 @@ public class GameEngine extends Application {
 				case 0:
 					break;
 				case 1:
-					addPlatform(new Platform( 1 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , scale.scaleWidth , scale.scaleHeight , Color.BLACK));
+					addPlatform(new Platform( 1 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , Color.BLACK ));
 					break;
 				case 6:
-					addPlatform(new Platform( 6 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , scale.scaleWidth , scale.scaleHeight , Color.RED));
+					addPlatform(new Platform( 6 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , Color.RED));
 					break;
 				case 7:
-					addPlatform(new Platform( 7 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , scale.scaleWidth , scale.scaleHeight , Color.TRANSPARENT));
+					addPlatform(new Platform( 7 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , Color.TRANSPARENT));
 					break;
 				case 8:
-					addPlatform(new Platform( 8 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , scale.scaleWidth , scale.scaleHeight , Color.TRANSPARENT));
+					addPlatform(new Platform( 8 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , Color.TRANSPARENT));
 					break;
 				case 9:
-					addPlatform(new Platform( 9 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , scale.scaleWidth , scale.scaleHeight , Color.TRANSPARENT));
+					addPlatform(new Platform( 9 , (x * 60) - 60 , (y * 60) - 60, 60 , 60 , Color.TRANSPARENT));
 					break;
 				}
 				

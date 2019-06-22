@@ -5,11 +5,8 @@ import java.util.ArrayList;
 
 /*
  * 
- *  A class for runing a function later with arguments inside
+ *  A class for running a function later with arguments inside
  *  
- *
- * 
- * Written by Jacob Olsson
  * 
  * 
  */
@@ -65,5 +62,13 @@ public abstract class RunnableArg<dataType> implements Runnable {
     
     public dataType getArg() {
         return args.get(0);
+    }
+    
+    public String geAsOne() {
+    	String buffer = "";
+    	for (dataType dataType : args) {
+    		buffer += dataType;
+		}
+    	return buffer;
     }
 }

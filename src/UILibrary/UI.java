@@ -1,5 +1,7 @@
 package UILibrary;
 
+import static LakerLibrary.Input.*;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -54,17 +56,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
-import com.sun.java.swing.plaf.gtk.GTKConstants.Orientation;
 import com.sun.prism.paint.Color;
 import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion.Setting;
 import com.sun.xml.internal.ws.api.server.Container;
 
-import JackeLibrary.console;
+import LakerLibrary.console;
 import UILibrary.*;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
-
-import static JackeLibrary.Input.*;
 
 public class UI {
 	

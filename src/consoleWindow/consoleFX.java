@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import JackeLibrary.console;
+import LakerLibrary.console;
 import application.MainFX;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -41,6 +41,7 @@ public class consoleFX extends Application{
 	private String textBefore = "";
 	public static boolean standalone = false;
 	public boolean master = false;
+	private static runnableConsole caller;
 	
 
 	public void initialize() {
@@ -61,6 +62,7 @@ public class consoleFX extends Application{
 		
 	}
 	
+	//: Opens a new console , this console has to be called from a javafx thread.
 	public void display() {
 		
 		 try {			
@@ -79,7 +81,7 @@ public class consoleFX extends Application{
 		  
 		        textfield = (TextArea) scene.lookup("#main");
 		        
-		    } catch (IOException e) {
+		    } catch (Exception e) {
 		       System.out.println("Failed to create new Window." + e);
 		    }
 	
@@ -112,12 +114,15 @@ public class consoleFX extends Application{
 		
 	}
 	
-	public void displayStandalone() {
+	//: creates a new javafx thread and opens a new console in it.
+	public void displayStandalone(runnableConsole caller) {
+		this.caller = caller;
 		standalone = true;
 		master = true;
 		launch(APP.Main.ARGS);
 	}
-	
+		
+	//: Main javafx method , called by the javafx thread
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
@@ -144,8 +149,11 @@ public class consoleFX extends Application{
 				codeTOrun = null;
 			}
 			
+			caller.setConsole(this);
+			caller.run();
+			
 		} catch(Exception e) {
-			console.log(e.getMessage());
+			console.log("error " + e.getMessage());
 		}
 	
 	}
@@ -172,10 +180,12 @@ public class consoleFX extends Application{
 		
 	}
 	
+	//: prints a text
 	public void print(String text) {
 		getWindow().appendText( "\n" + text);
 	}
 	
+	//: prints the text with a new character
 	private void addText(String text) {
 		getWindow().appendText(text);
 	}
