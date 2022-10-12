@@ -1,7 +1,7 @@
 package application;
 
 import LakerLibrary.*;
-import consoleWindow.consoleFX;
+import console_external.consoleFX;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -63,8 +63,8 @@ public class controler {
 		//: updates the CPU usage every second
 		$.time.setInterval("mainFX" ,0, 1000, ()->{
 			
-				int usedMem = (int) $.computer.getUsedMem();
-				int totallMem = (int) $.computer.getVMTotalMem();
+				int usedMem = (int) $.system.info.getUsedMem();
+				int totallMem = (int) $.system.info.getVMTotalMem();
 				int memProcentage = totallMem/usedMem;
 			shiftSeriesYValue(series, memProcentage);
 		});

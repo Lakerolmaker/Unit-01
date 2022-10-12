@@ -8,8 +8,8 @@ public class ScreenScale {
 	private int Width_orginal = 1440;
 	private int height_original = 900;
 	
-	public int screenWidth = $.computer.getScreenWidth();
-	public int screenHeight = $.computer.getScreenHeight();
+	public int screenWidth = $.system.info.getScreenWidth();
+	public int screenHeight = $.system.info.getScreenHeight();
 	
 	public double scaleWidth =  (double)screenWidth / (double)Width_orginal;
 	public double scaleHeight = (double)screenHeight / (double)height_original;

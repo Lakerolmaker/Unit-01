@@ -13,8 +13,26 @@ public class systemInfo {
 
 	
 	public static void main(String[] args) throws Exception {
-		new systemInfo().info();
+		systemInfo info = new systemInfo();
+		System.out.print("OS-name : " + info.getOSname());
+		System.out.print("\n");
+		System.out.print("OS-version : " + info.getOSversion());
+		System.out.print("\n");
+		System.out.print("OS-arch : " + info.getOsArch());
+		System.out.print("\n");
+		System.out.print("Max-mem : " + info.getVMMaxMem());
+		System.out.print("\n");
+		System.out.print("Alocated-mem : " + info.getVMTotalMem());
+		System.out.print("\n");
+		System.out.print("Used-mem : " + info.getUsedMem());
+		System.out.print("\n");
+		System.out.print("total free mem : " + info.getVMTotalFreeMem());
+		System.out.print("\n");
+		System.out.print("avaleble-cores : " + info.getAvailableCores());
+		System.out.print("\n");
+		System.out.print("\n");
 	}
+	
 	
 	public int getScreenWidth() {
 		return gd.getDisplayMode().getWidth();
@@ -22,27 +40,6 @@ public class systemInfo {
 
 	public int getScreenHeight() {
 		return gd.getDisplayMode().getHeight();
-	}
-
-	// : System.out.prints all the available info
-	public void info() {
-		System.out.print("OS-name : " + this.getOSname());
-		System.out.print("\n");
-		System.out.print("OS-version : " + this.getOSversion());
-		System.out.print("\n");
-		System.out.print("OS-arch : " + this.getOsArch());
-		System.out.print("\n");
-		System.out.print("Max-mem : " + this.getVMMaxMem());
-		System.out.print("\n");
-		System.out.print("Alocated-mem : " + this.getVMTotalMem());
-		System.out.print("\n");
-		System.out.print("Used-mem : " + this.getUsedMem());
-		System.out.print("\n");
-		System.out.print("total free mem : " + this.getVMTotalFreeMem());
-		System.out.print("\n");
-		System.out.print("avaleble-cores : " + this.getAvailableCores());
-		System.out.print("\n");
-		System.out.print("\n");
 	}
 
 	public String getComputerName() {

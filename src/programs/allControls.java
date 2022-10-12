@@ -24,14 +24,21 @@ public class allControls {
 	    frame1.addLabel("labelID", "label", 10, 140, 45, 30);
 	    frame1.label.setborder("labelID", border.stroke(1, 1));
 	   
-	    frame1.addButton("Print" ,  250 , 100 , 100 ,30 , null ); 
+	    frame1.addButton("Print" ,  250 , 100 , 100 ,30 , new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("hello");
+				
+			}
+		} ); 
 	    
 	    frame1.addSlider("slider", 150, 10, 200, 40, 0, 50, 25, true);
 	    frame1.slider.addOnChange("slider", ()->{
 	    	
 	    	int procentage = frame1.slider.getProcentage("slider");
 	    	
-	    frame1.updateProgressbar("hello", procentage);
+	    	frame1.updateProgressbar("hello", procentage);
 	    	
 	    });
 	    
@@ -50,7 +57,7 @@ public class allControls {
 				"colum 1",
 				"colum 2",
                	};
-	    String computerName = $.computer.getComputerName();
+	    String computerName = $.system.info.getComputerName();
 		Object[][] data = {
 			    {"1" , "1 data"},
 			    {"2" , "2 data"},
@@ -65,6 +72,12 @@ public class allControls {
 		
 		frame1.show();
 		
+		
+	}
+	
+	public static void main(String[] args) throws Exception{
+		
+		allControls.start();
 		
 	}
 	

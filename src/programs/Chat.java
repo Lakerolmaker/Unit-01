@@ -50,6 +50,12 @@ public class Chat {
 	}
 	
 	
+	public static void main(String[] args) throws Exception{
+		
+		Chat.start();
+		
+	}
+	
 	
 	
 }

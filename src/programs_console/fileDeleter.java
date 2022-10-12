@@ -3,11 +3,11 @@ package programs_console;
 import java.io.File;
 import java.util.Arrays;
 
-import com.sun.org.apache.xpath.internal.operations.Number;
+
 
 import LakerLibrary.$;
 import LakerLibrary.console;
-import consoleWindow.runnableConsole;
+import console_external.runnableConsole;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -25,7 +25,7 @@ public class fileDeleter {
 		
 	public static void deleteLowerThan() {
 
-		console.external.openStandalone(new runnableConsole() {
+		console.external.displayStandalone(null, new runnableConsole() {
 			
 			@Override
 			public void run() {
@@ -96,9 +96,9 @@ public class fileDeleter {
 					}else if((input != "") && (index == 3)) {
 						if(input.toUpperCase().equals("Y")) {
 							deleteStart();
-							console.external.removeEnterEvent("deleteLowerThan_Main");
+							console.external.removeKeydownEvent("deleteLowerThan_Main");
 						}else {
-							console.external.removeEnterEvent("deleteLowerThan_Main");
+							console.external.removeKeydownEvent("deleteLowerThan_Main");
 						}
 						programs_console.consoleMenu.turnon();
 						console.external.print("");

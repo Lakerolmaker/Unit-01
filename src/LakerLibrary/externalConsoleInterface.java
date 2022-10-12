@@ -1,8 +1,8 @@
 package LakerLibrary;
 
-import consoleWindow.consoleFX;
-import consoleWindow.consoleInterface;
-import consoleWindow.runnableConsole;
+import console_external.consoleFX;
+import console_external.consoleInterface;
+import console_external.runnableConsole;
 
 public interface externalConsoleInterface extends consoleInterface{
 

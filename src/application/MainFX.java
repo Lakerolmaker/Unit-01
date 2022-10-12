@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import LakerLibrary.$;
 import LakerLibrary.console;
-import consoleWindow.consoleFX;
+import console_external.consoleFX;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +53,7 @@ public class MainFX extends Application {
 
 	}
 
-	public static void startProgram(String[] args) {
+	public static void main(String[] args) throws Exception{
 		launch(args);
 	}
 

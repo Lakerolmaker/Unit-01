@@ -23,8 +23,6 @@ public class PostClass {
 	// HTTP POST request
 	public void post() throws Exception {
 		
-		if(this.URL == null) { URL = "http://api.lakerolmaker.com/main.php"; }
-		
 		//: Opens a web-handler
 		URL wsURL = new URL(URL);
 		HttpURLConnection con = (HttpURLConnection) wsURL.openConnection();

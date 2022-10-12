@@ -27,15 +27,12 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamListener;
 
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.VoiceManager;
-
 import LakerLibrary.$;
 import LakerLibrary.EnglishNumberToWords;
 import LakerLibrary.console;
-import consoleWindow.consoleFX;
-import consoleWindow.consoleStyle;
-import consoleWindow.runnableConsole;
+import console_external.consoleFX;
+import console_external.consoleStyle;
+import console_external.runnableConsole;
 import encryption.AES_crypt;
 import encryption.B64_crypt;
 import encryption.MD5_crypt;
@@ -67,23 +64,23 @@ public class consoleMenu {
 	private static long activeFontSize = 13;
 	private static String activeFontFamily = "Consolas";
 	private static String runningApp = "";
-	
+
 	private static String mode = "";
-	
+
 	private static int progress = 0;
-	
+
 	private static ArrayList<consoleFX> consoleArray = new ArrayList<consoleFX>();
-	
+
 	public static void start() {
-		
+
 		// progress bar
-		
-		
-		// todo  
-		
+
+
+		// todo
+
 		//programs
 		// ftp
-		
+
 		// sub routines:
 		// unpack zip
 		// drag and drop
@@ -92,21 +89,21 @@ public class consoleMenu {
 		// cancel all apps
 		// hacker mode
 		// make maain function
-		
+
 		//: turn on backslash
-		
+
 		// text to speach
 		// jar inside jar'
-		
+
 		createSavefolder();
 		loadSave();
-		
-		console.external.openStandalone(new runnableConsole() {
-			
+
+		console.external.displayStandalone(null, new runnableConsole() {
+
 			@Override
 			public void run() {
 				path = System.getProperty("user.dir");
-				
+
 
 				console.external.print("");
 				console.external.print("Lakerolmakers console  V 3.4");
@@ -114,13 +111,13 @@ public class consoleMenu {
 				console.external.print("");
 				console.external.print("To list all commands type help.");
 				printCursor();
-				
+
 				console.external.addKeydownEvent( "consoleMenuMain", KeyCode.ENTER , ()-> {
 					String input = "";
 					input = console.external.getInput();
-					
+
 					if(on) {
-					
+
 						if(index == 0) {
 							switch (getFirstArg(input)) {
 							case "cd":
@@ -169,9 +166,6 @@ public class consoleMenu {
 							case "fontSize":
 								fontSize(input);
 								break;
-							case "speak":
-								speak(input);
-								break;
 							case "matrix":
 								matrix();
 								break;
@@ -187,40 +181,40 @@ public class consoleMenu {
 								}
 								break;
 							}//: end switch
-							
+
 						}//: end index 0
 						// edit mode 1
 						else if(index == 1) {
-							
+
 						}
-			
+
 						commandHistory_INDEX = -1;
 						printCursor();
-					
+
 					}
-					
+
 					saveHistory(input);
-					
+
 				});
-				
+
 				addKeyNormalBinds();
 				addStaticKeyBinds();
 
-				
+
 			}
-		
+
 		});
-			
+
 	}
-	
+
 	private static void printHelp(String input) {
 		String[] args = getArgs(input);
 		String[] content = getContent(args);
-		
-		
+
+
 		if(hasArgs(args)){
 			if(contains(args ,"-encrypt")) {
-				
+
 				console.external.print("Encrypt Info:");
 				console.external.print("Encrypt is a command that encrypt a string. ");
 				console.external.print("encrypts the string using DES if no other method is specified   ");
@@ -229,7 +223,7 @@ public class consoleMenu {
 				console.external.print("-AES \t Encrypts the string with a Advanced Encryption Standard");
 				console.external.print("-DES \t Encrypts the string with the standard data encryption standard");
 				console.external.print("-MD5 \t Encrypts the string into a 128-bit hash value using MD5");
-				
+
 			}else if(contains(args ,"-decrypt")) {
 
 				console.external.print("Decrypt Info:");
@@ -256,7 +250,7 @@ public class consoleMenu {
 				console.external.print("--		\t Changes the current working path to it's parent");
 
 			}else if(contains(args ,"-color")) {
-				
+
 				console.external.print("Color Info:");
 				console.external.print("Changes the color of the text used in the console.");
 				console.external.print("There are a set amount of colors to choose from.");
@@ -267,7 +261,7 @@ public class consoleMenu {
 				printArray(consoleStyle.fontColors, 2);
 
 			}else if(contains(args ,"-fontSize")) {
-				
+
 				console.external.print("FontSize Info:");
 				console.external.print("Changes the font of the text used in the console.");
 				console.external.print("You can also change the fontSize with ctrl + '+/-'");
@@ -279,7 +273,7 @@ public class consoleMenu {
 				printArray(consoleStyle.fontSize, 5);
 
 			}else if(contains(args ,"-ftp")) {
-				
+
 				console.external.print(FTPProgram.USAGE);
 
 			}else {
@@ -310,49 +304,49 @@ public class consoleMenu {
 			console.external.print("encrypt      \t\t Encrypts a string");
 			console.external.print("decrypt      \t\t Decrypts a string");
 			console.external.print("tree    	    \t\t prints the the structure of a path");
-				
+
 		}
-		
+
 
 	}
-	
+
 	private static void print(String input) {
 		console.external.print(input);
 	}
-	
+
 	private static void error(String input) {
 		console.external.error(input);
 	}
 
 	private static void setText(String input) {
-		console.consoleWindow.setText(input);
+		console.external.setText(input);
 	}
-	
+
 	private static void printArray(String[] input , int numCol) {
 		int index = 0;
 		String temp = "";
-				
+
 		for (int i = 0; i < input.length; i++) {
 			String value = input[i];
-			
+
 			temp += value + " \t";
 			index++;
-			
+
 			if(index == numCol) {
 				print(temp);
 				temp = "";
-				index = 0; 
+				index = 0;
 			}
-			
+
 		}
-	
+
 	}
-	
+
 	public static void turnon() {
 		addKeyNormalBinds();
 		on = true;
 	}
-	
+
 	public static void turnoff() {
 		removeNormalKeyBinds();
 		on = false;
@@ -365,31 +359,31 @@ public class consoleMenu {
 		      return text; // Text is the first word itself.
 		  }
 	}
-	
+
 	private static String[] getArgs(String input) {
 		return input.split(" ");
 	}
-	
+
 	private static boolean contains(String[] input , String search) {
 		for(String index : input) {
-			if (index.equals(search)) 
+			if (index.equals(search))
 				return true;
 		}
 		return false;
 	}
-	
+
 	private static boolean hasArgs(String[] input) {
 		for(String index : input) {
-			if (index.charAt(0) == '-') 
+			if (index.charAt(0) == '-')
 				return true;
 		}
 		return false;
 	}
-	
+
 	private static String[] getContent(String[] input) {
 		ArrayList<String> temp =  new ArrayList<String>();
 		for(int i = 0; i < input.length; i++) {
-			if ((input[i].charAt(0) != '-') && (i != 0)) 
+			if ((input[i].charAt(0) != '-') && (i != 0))
 				temp.add(input[i]);
 		}
 		return temp.toArray(new String[0]);
@@ -398,17 +392,17 @@ public class consoleMenu {
 	private static String getContentAsOne(String[] input) {
 		String temp = "";
 		for(int i = 0; i < input.length; i++) {
-			if ((input[i].charAt(0) != '-') && (i != 0)) 
+			if ((input[i].charAt(0) != '-') && (i != 0))
 				if(i == input.length - 1) {
 					temp += input[i];
 				}else {
 					temp += input[i] + " ";
 				}
-				
+
 		}
 		return temp;
 	}
-	
+
 	private static boolean checkContent_one(String[] input) {
 		if(input.length == 1) {
 			return true;
@@ -416,19 +410,19 @@ public class consoleMenu {
 			return false;
 		}
 	}
-	
+
 	private static void printCursor() {
 		console.external.print("/" + getDirectory(path) + " >");
 		console.external.saveText();
 	}
-	
+
 	private static void encrypt(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
 		String encryptedData = "";
-		
+
 			if(hasArgs(args)){
-			
+
 				if(contains(args , "-DES")) {
 					encryptedData = encryption.DES.encrypt(content);
 				}else if(contains(args , "-AES")) {
@@ -440,11 +434,11 @@ public class consoleMenu {
 				}else {
 					encryptedData = encryption.DES.encrypt(content);
 				}
-				
+
 			}else {
 				encryptedData = encryption.DES.encrypt(content);
 			}
-	
+
 			if(encryptedData != null) {
 				if(contains(args , "-file")) {
 					$.file.writeToTextFile("Encrypted_Text", encryptedData , $.file.desktop);
@@ -454,18 +448,18 @@ public class consoleMenu {
 				}
 			}else {
 				console.external.error("Could not encrypt string : '" + content + "'");
-			}		
+			}
 	}
-	
+
 	private static void decrypt(String input) {
 		String[] args = getArgs(input);
 		String[] content = getContent(args);
 		String decryptedData = "";
-		
+
 		if(checkContent_one(content)) {
 			String cont = content[0];
 			if(hasArgs(args)){
-			
+
 				if(contains(args , "-DES")) {
 					decryptedData = encryption.DES.decrypt(cont);
 				}else if(contains(args , "-AES")) {
@@ -473,47 +467,47 @@ public class consoleMenu {
 				}else if(contains(args , "-B64")) {
 					decryptedData = encryption.B64.decrypt(cont);
 				}
-				
+
 			}else {
 				decryptedData = encryption.DES.decrypt(cont);
 			}
-			
+
 			if(decryptedData != null) {
 				console.external.print("Decrypted : " + decryptedData);
 			}else {
 				console.external.error("Could not decrypt string : '" + cont + "'");
 			}
-			
+
 		}else {
 			console.external.error("Could not read arguments");
 		}
 
 	}
-	
+
 	private static void changeDir(String input) {
-		
+
 		String[] args = getArgs(input);
 		String[] content = getContent(args);
 
 		if(hasArgs(args)) {
-			
+
 			if(contains(args , "-home")) {
 				checkDir($.file.CurrentDir);
 			}else if(contains(args , "-root")) {
-				path = $.computer.getDiskPath(0);
+				path = $.system.info.getDiskPath(0);
 			}else if(contains(args , "-desktop")) {
 				checkDir(System.getProperty("user.home") + File.separator + "Desktop");
 			}
-			
+
 		}else {
-			
+
 			if(checkContent_one(content)) {
 				checkDir(content[0]);
 			}
 
-		}	
+		}
 	}
-	
+
 	private static void checkDir(String input) {
 		String url = input;
 		String newUrl = path + File.separator + url;
@@ -537,15 +531,15 @@ public class consoleMenu {
 				i = 0;
 			}
 		}
-		
+
 		return  input.substring(position , input.length() ); // Extract first word.
-		
+
 	}
-	
+
 	private static void tree(String input) {
 		String[] args = getArgs(input);
 		String[] content = getContent(args);
-		
+
 		if(hasArgs(args)) {
 			if(contains(args , "-home")) {
 				ListTree($.file.CurrentDir);
@@ -553,21 +547,19 @@ public class consoleMenu {
 		}else {
 			ListTree(path);
 		}
-		
+
 	}
 
 	private static void ListTree(String path) {
 		printTree(path , 0);
 	}
-	
+
 	private static void printTree(String path , int indentation) {
-		
+
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
-		
+
 	try {
-		
-	
 	      Arrays.sort(listOfFiles, (f1, f2) -> {
 	          if (f1.isDirectory() && !f2.isDirectory()) {
 	             return 1;
@@ -579,37 +571,37 @@ public class consoleMenu {
 	       });
 
 		String indent = "";
-		
+
 		for(int i = 0 ; i < indentation; i++) {
 			indent += "\t";
 		}
-		
-		
+
+
 		for (File file : listOfFiles) {
-			
+
 		    if ((file.isFile()) && (	file.isHidden() != true)) {
 		    	console.external.print(indent + file.getName() + " | " + $.file.getSizeEnding(file.length()));
 		    }
-			
+
 			if ((file.isDirectory()) && (file.isHidden() != true)){
 				console.external.print(" ");
 				console.external.print(indent + File.separator + file.getName());
 				Thread.sleep(100);
 				printTree(file.getAbsolutePath() ,indentation + 1 );
 		    }
-			
+
 		}
-		
+
 	} catch (Exception e) {}
-			
-	
-	
+
+
+
 	}
-	
+
 	private static void PrintPath(boolean includeFiles ) {
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
-		
+
 	try {
 	      Arrays.sort(listOfFiles, (f1, f2) -> {
 	          if (f1.isDirectory() && !f2.isDirectory()) {
@@ -622,69 +614,52 @@ public class consoleMenu {
 	       });
 
 		String toPrint = "";
-	      
+
 		if(includeFiles == true ) {
 			for (File file : listOfFiles) {
-				
+
 			    if ((file.isHidden() != true)  && (includeFiles == true)) {
-			    	
+
 			    	toPrint = file.getName();
-			    	
+
 			    	long fileSize = file.length();
 			    	toPrint += "\t " + formatSize(fileSize);
-			    	
 
-			    	
+
+
 			    	console.external.print(toPrint);
 
-			    }	
+			    }
 			}
 		}else {
 			for (File file : listOfFiles) {
 				if ((file.isDirectory()) && (file.isHidden() != true)){
 					toPrint += ( file.getName() + "\t  ");
 			    }
-				
+
 			}
 		}
-		
-		
+
+
 		console.external.print(toPrint);
-		
+
 	} catch (Exception e) {}
 
 	}
-	
+
 	public static String formatSize(long v) {
 	    if (v < 1024) return v + " B";
 	    int z = (63 - Long.numberOfLeadingZeros(v)) / 10;
 	    return String.format("%.1f %sB", (double)v / (1L << (z*10)), " KMGTPE".charAt(z));
 	}
 
-	private static void speak(String input) {
-		String[] args = getArgs(input);
-		String content = getContentAsOne(args);
-
-		//$.api.TTS(content);
-		Voice voice;
-		VoiceManager vm = VoiceManager.getInstance();
-		voice = vm.getVoice("kevin");
-		try {
-		console.external.print(voice.toString());
-		voice.allocate();
-		voice.speak(content);
-		} catch (Exception e) {
-			console.logg(e.toString());
-		}
-	}
-		
 	private static void fontFamily(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
-		
-		
+
+
 	}
-	
+
 	private static void fontSize(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
@@ -692,182 +667,182 @@ public class consoleMenu {
 		try {
 			number = Long.valueOf(content);
 		} catch (Exception e) {}
-		
+
 		if(number == activeFontSize) {
 			error(content  + " is allready the current fontSize");
 		}else if(number > 0) {
-						
-			console.consoleWindow.theTextField.setStyle("-fx-font-size: " + number +"px;");
-			
+
+			console.external.theTextField.setStyle("-fx-font-size: " + number +"px;");
+
 			activeFontSize = number;
-			
+
 			print("FontSize changed to " + number);
-			
+
 		}else{
 			error("could not set fontSize to " + content);
 		}
-	
+
 	}
 
 	private static void addTofontSize(int change) {
 		long newfontSize = activeFontSize + change;
-		
-		
+
+
 		if(newfontSize > 0){
-						
-			console.consoleWindow.theTextField.setStyle("-fx-font-size: " + newfontSize +"px;");
-			
+
+			console.external.theTextField.setStyle("-fx-font-size: " + newfontSize +"px;");
+
 			activeFontSize = newfontSize;
-			
+
 		}else{
 			error("FontSize can't be lower then zero");
 		}
-		
-		
+
+
 	}
-	
+
 	private static void color(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
-		
+
 		if(content == avtiveFontColor) {
 			error(content  + " is allready the active color ");
 		}else if(contains(consoleStyle.fontColors , content)) {
-			
-			console.consoleWindow.theTextField.getStyleClass().remove(avtiveFontColor);
-			console.consoleWindow.theTextField.getStyleClass().add(content);
-			
+
+			console.external.theTextField.getStyleClass().remove(avtiveFontColor);
+			console.external.theTextField.getStyleClass().add(content);
+
 			avtiveFontColor = content;
-			
+
 		}else{
 			error("No such color found!");
 		}
-		
+
 	}
-	
+
 	private static void matrix() {
-		
+
 		runningApp = "matrix";
-		
+
 		color("color green");
-		
+
 		$.time.setInterval("matrixTimer" , 0, 70, ()->{
-			
-			double width = console.consoleWindow.theTextField.getWidth();
+
+			double width = console.external.theTextField.getWidth();
 			double unit = width / activeFontSize;
 			double modulas = 1.3;
 			double numberCount = unit * modulas;
-			
+
 			String toBePrinted = "";
 			for(int i = 0; i < numberCount; i++) {
 				toBePrinted += $.number.randomInt(0, 10);
 			}
-							
+
 			print(toBePrinted);
-		});	
-	
+		});
+
 	}
-	
+
 	private static int Hackerprogress = 0;
 	private static void hackerMode() {
 		createNewConsoles();
-		
+
 		runningApp = "Multimatrix";
-		
+
 		color("color green");
-		
-		double width = console.consoleWindow.theTextField.getWidth();
+
+		double width = console.external.theTextField.getWidth();
 		double unit = width / activeFontSize;
 		double modulas = 1.3;
 		double numberCount = unit * modulas;
 
 		for (int ix = 0; ix < consoleArray.size(); ix++) {
 			int index = ix;
-			
+
 				$.time.setInterval("MultiMatrixTimer" , 0, 70, ()->{
-					
+
 					String toBePrinted = "";
 					for(int i = 0; i < numberCount; i++) {
 						toBePrinted += $.number.randomInt(0, 10);
 					}
 					consoleArray.get(index).print(toBePrinted);
-					
-				});		
+
+				});
 		};
-		
+
 		consoleFX hackConsole = new consoleFX();
 		hackConsole.display();
 		hackConsole.print("Setting up TTP connection");
-		hackConsole.print("");	
+		hackConsole.print("");
 		hackConsole.saveText();
-		
+
 		$.time.setInterval("hackerProgress", 1000, 1000, ()->{
 			if(Hackerprogress < 120) {
 				hackConsole.progressbar(Hackerprogress);
 			}else if(Hackerprogress == 130) {
-				hackConsole.print("FTP connection esstablished");	
+				hackConsole.print("FTP connection esstablished");
 			}else if(Hackerprogress == 140) {
-				hackConsole.print("Uploading passwords to database");	
+				hackConsole.print("Uploading passwords to database");
 			}else if(Hackerprogress > 200) {
 				$.time.removeInterval("hackerProgress");
 				$.time.removeInterval("MultiMatrixTimer");
 				removeNewConsoles();
 			}
-			
+
 			Hackerprogress += 10;
 		});
-	
+
 	}
-	
+
 	private static void createNewConsoles() {
-		int height = $.computer.getScreenHeight();
+		int height = $.system.info.getScreenHeight();
 		int heightAmount = (height - 20) / 290;
-		
-		int width = $.computer.getScreenWidth();
+
+		int width = $.system.info.getScreenWidth();
 		int widhtAmount = width / 430;
-		
+
 		int indent = 0;
 		int marginTop = 20;
-		
+
 		for (int ix = 0; ix < heightAmount; ix++) {
-		
+
 			for (int i = 0; i < widhtAmount; i++) {
-				
+
 				consoleFX NEWconsole = new consoleFX();
 				NEWconsole.display(indent , marginTop );
 				indent += 430;
 				consoleArray.add(NEWconsole);
-				
+
 			}
 			marginTop += 290;
 			indent = 0;
 		}
 	}
-	
+
 	private static void removeNewConsoles() {
 		for (consoleFX cons : consoleArray) {
 			cons.close();
 		}
 		consoleArray.clear();
 	}
-	
+
 	private static void createSavefolder() {
 		$.file.createSavefolder();
 		$.file.createFolder("console", $.file.savePath);
 	}
-	
+
 	private static void saveHistory(String input) {
 		if(input.equals("") != true) {
-			$.file.writeToExistingFile("consoleHistory", input + "\n", savePath);
+			$.file.writeToTextFile("consoleHistory", input + "\n", savePath);
 			commandHistory.add(0 , input);
 		}
 	}
-	
+
 	private static void loadSave() {
 		String[] temp =	$.number.reverse($.file.readFromTextFile_Arr("consoleHistory", savePath));
 		commandHistory = new ArrayList<String>(Arrays.asList(temp));
 	}
-	
+
 	private static void cancelApps() {
 		switch (runningApp) {
 		case "matrix":
@@ -875,11 +850,11 @@ public class consoleMenu {
 			break;
 		}
 	}
-	
+
 	private static void readFile(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
-		
+
 		String fileContent;
 		try {
 			fileContent = $.file.readFromFile(content, path);
@@ -888,13 +863,13 @@ public class consoleMenu {
 		} catch (Exception e) {
 			error("Could not read file");
 		}
-		
+
 	}
-	
+
 	private static void duplicateFile(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
-		
+
 		try {
 			$.file.dublicateFile(content, path);
 			print("File duplicated");
@@ -906,7 +881,7 @@ public class consoleMenu {
 	private static void editFile(String input) {
 		String[] args = getArgs(input);
 		String content = getContentAsOne(args);
-		
+
 		boolean canread = false;
 		String fileContent;
 		try {
@@ -915,118 +890,118 @@ public class consoleMenu {
 		} catch (Exception e) {
 			error("Could not edit file");
 		}
-		
-		
+
+
 		if(canread) {
 			index = 1;
 			turnoff();
 			removeNormalKeyBinds();
 			addEditKeyBinds();
-			
-			
+
+
 			print("");
 			console.external.printLine();
-			
+
 		}
-			
+
 	}
-	
+
 	private static void addKeyNormalBinds() {
 
-		
+
 		//: fontSize
 		KeyCharacterCombination plusComb = new KeyCharacterCombination("+", KeyCombination.CONTROL_DOWN);
-		console.consoleWindow.addMultiKeyDown("plusEvent", plusComb, ()->{
+		console.external.addMultiKeyDown("plusEvent", plusComb, ()->{
 			addTofontSize(1);
 		});
-		
+
 		KeyCharacterCombination minusComb1 = new KeyCharacterCombination("-", KeyCombination.CONTROL_DOWN);
 		KeyCodeCombination minusComb2 = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_DOWN);
-		console.consoleWindow.addMultiKeyDown("minusevent", minusComb1, minusComb2, ()->{
+		console.external.addMultiKeyDown("minusevent", minusComb1, minusComb2, ()->{
 			addTofontSize(-1);
 		});
-		
+
 		KeyCodeCombination controlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-		console.consoleWindow.addMultiKeyDown("cancelEvent", controlC, ()->{
+		console.external.addMultiKeyDown("cancelEvent", controlC, ()->{
 			cancelApps();
 			printCursor();
 		});
-		
+
 
 	}
-	
+
 	private static void removeNormalKeyBinds() {
-		console.external.removeEnterEvent("plusEvent");
-		console.external.removeEnterEvent("minusevent");
-		console.external.removeEnterEvent("cancelEvent");
+		console.external.removeKeydownEvent("plusEvent");
+		console.external.removeKeydownEvent("minusevent");
+		console.external.removeKeydownEvent("cancelEvent");
 	}
 
 	private static void addStaticKeyBinds() {
-		//: History 
+		//: History
 		console.external.addKeydownEvent("upArrowEvent", KeyCode.UP, ()->{
 			if(commandHistory_INDEX < commandHistory.size() - 1) {
 				commandHistory_INDEX++;
-				String before = console.consoleWindow.getBackupText();
+				String before = console.external.getBackupText();
 				String command = commandHistory.get(commandHistory_INDEX);
 				String appended = before + command;
-				console.consoleWindow.setText(appended);
+				console.external.setText(appended);
 			}
 		});
-		
-		//: History 
+
+		//: History
 		console.external.addKeydownEvent("downArrowEvent", KeyCode.DOWN, ()->{
 			if(commandHistory_INDEX > 0) {
 				commandHistory_INDEX--;
-				String before = console.consoleWindow.getBackupText();
+				String before = console.external.getBackupText();
 				String command = commandHistory.get(commandHistory_INDEX);
 				String appended = before + command;
-				console.consoleWindow.setText(appended);
+				console.external.setText(appended);
 			}else if(commandHistory_INDEX == 0){
-				String before = console.consoleWindow.getBackupText();
-				console.consoleWindow.setText(before);
+				String before = console.external.getBackupText();
+				console.external.setText(before);
 				commandHistory_INDEX--;
 			}
 		});
-		
+
 		console.external.addKeydownEvent("preventBackSpace", KeyCode.BACK_SPACE, ()->{
-			
-			String before = console.consoleWindow.getBackupText();
+
+			String before = console.external.getBackupText();
 			String textNow = console.external.getText();
 			if(textNow.contains(before) == false) {
-				console.consoleWindow.setText(before);
+				console.external.setText(before);
 			}
-			
+
 		});
 	}
-	
+
 	private static void addEditKeyBinds() {
-		
+
 		KeyCodeCombination controlX = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
-		console.consoleWindow.addMultiKeyDown("savEevent", controlX, ()->{
+		console.external.addMultiKeyDown("savEevent", controlX, ()->{
 			console.log("save");
 		});
-		
+
 	}
-	
+
 	/****************************************************************
-	 
+
 	  FTP Mode
-	 
+
 	****************************************************************/
-	
+
 	private static FTPClient ftp;
-	
+
 	private static void ftpControler(String input) {
 		String[] args = getArgs(input);
 		String[] content = getContent(args);
 		String oneContent = getContentAsOne(args);
-		
+
 		// download
 		// upload
 		// make dir
 		// logout
 		// save login info
-		
+
 		switch (args[1]) {
 		case "-connect":
 			FTPconnect(content);
@@ -1077,12 +1052,12 @@ public class consoleMenu {
 			error("No such command found");
 			break;
 		}
-		
+
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private static void FTPprintStatus() {
-		
+
 		print("");
 		if(ftp != null) {
 			if(ftp.isConnected()) {
@@ -1095,21 +1070,21 @@ public class consoleMenu {
 				String systemName = "error";
 				String status = "error";
 				int connectionMode = ftp.getDataConnectionMode();
-				
+
 				try {
 					status = ftp.getStatus();
 				} catch (IOException e) {}
 				try {
 					systemName = ftp.getSystemName();
 				} catch (IOException e) {}
-				
+
 				print("FTP Status - connected");
 				print("Ip-Adress : " + ipAdress );
 				print("Local port : " + localPort  + " ,  remote port : " + remotePort);
 				print("Connection mode : " + connectionMode);
 				print("Hostname : " + hostName);
 				print("Systemname : " + systemName);
-				
+
 				print("Status : " + status);
 			}else {
 				print("FTP Status - disconnected");
@@ -1117,15 +1092,15 @@ public class consoleMenu {
 		}else {
 			print("FTP Status - disconnected");
 		}
-		
+
 	}
-	
+
 	private static void FTPlogin(String[] input) {
-		
+
 		try {
 			String username = input[0];
 			String password = input[1];
-			
+
 			 if (!ftp.login(username, password))
 	         {
 	             ftp.logout();
@@ -1136,20 +1111,20 @@ public class consoleMenu {
 	        	 	print(ftp.getReplyString());
 	         }
 
-	         
+
 		} catch (Exception e) {
 			error("Could no use the arguments specified");
 			console.logg(e + " at " + e.getStackTrace()[0].getLineNumber());
 		}
-	
+
 	}
 
 	private static void FTPconnect(String[] input) {
-		
+
 		try {
 			String serverAdress = input[0];
 			int port = Integer.valueOf(input[1]);
-		
+
 			ftp = new FTPClient();
 	        try
 	        {
@@ -1180,18 +1155,18 @@ public class consoleMenu {
 	                catch (IOException f) {}
 	            }
 	            error("Could not connect to server.");
-	        
+
 	        }
-	
+
 		} catch (Exception e) {
 			error("Could no use the arguments specified");
 		}
-		
+
 	}
 
 	private static void FTPlistFiles(boolean showFiles) {
 
-	 	
+
         try {
 			for (FTPFile file : ftp.listFiles()) {
 				if(file.isDirectory()) {
@@ -1203,43 +1178,43 @@ public class consoleMenu {
 					printed += file.getName();
 					printed += "\t Size :" + file.getSize();
 				    print(printed);
-				} 
+				}
 			}
 		} catch (Exception e) {
 			error(e.getMessage());
 		}
-		
+
 	}
 
 	private static void FTPdeleteFile(String[] input) {
-		
+
 		try {
 			String fileName = input[0];
-		
+
 			if(ftp.deleteFile(fileName)) {
 				print("File deletd");
 			}else{
 				error("Could not delete file");
 			};
-			
+
 		} catch (Exception e) {
 			error(e.getMessage());
 			console.logg(e + " at " + e.getStackTrace()[0].getLineNumber());
 		}
-	
-		
+
+
 	}
 
 	private static void FTPuploadFile(String input) {
 		if(ftp != null) {
 			try {
-				
+
 				String localFileName = input;
 				File file = new File(path + File.separator + localFileName);
 				InputStream localFile = new FileInputStream(file);
 				FTPfileSize = file.getTotalSpace();
 				ftp.appendFile(localFileName, localFile);
-			
+
 			} catch (Exception e) {
 				error(e.getMessage());
 			}
@@ -1247,16 +1222,16 @@ public class consoleMenu {
 			error("Not connected to a server");
 		}
 	}
-	
+
 	private static void FTPdownloadFile(String input) {
 		if(ftp != null) {
 			try {
 
 				String remoteFileName = input;
-				
+
 				File localFile = new File(path + File.separator + remoteFileName);
 				boolean ff = localFile.exists();
-				
+
 				if(localFile.isFile() == false) {
 					OutputStream file = new FileOutputStream(localFile);
 					ftp.retrieveFile(remoteFileName, file);
@@ -1264,7 +1239,7 @@ public class consoleMenu {
 				}else {
 					error("File with that name allready exits");
 				}
-			
+
 			} catch (Exception e) {
 				error(e.getMessage());
 			}
@@ -1272,11 +1247,11 @@ public class consoleMenu {
 			error("Not connected to a server");
 		}
 	}
-	
+
 	private static void FTPgoToParentDIR() {
 		try {
 			if(ftp.changeToParentDirectory()) {
-				
+
 			}else {
 				error("Could not change to parent directory");
 			}
@@ -1284,13 +1259,13 @@ public class consoleMenu {
 			error(e.getMessage());
 			console.logg(e + " at " + e.getStackTrace()[0].getLineNumber());
 		}
-		
+
 	}
 
 	private static void FTPchangeDIR(String[] input) {
 		try {
 			String path = input[0];
-			
+
 			if(ftp.changeWorkingDirectory(path)) {
 				print("Changed to FTP path to /" + path);
 			}else {
@@ -1301,7 +1276,7 @@ public class consoleMenu {
 			console.logg(e + " at " + e.getStackTrace()[0].getLineNumber());
 		}
 	}
-	
+
 	private static void FTPdisconnect() {
 		if(ftp != null) {
 			try {
@@ -1313,7 +1288,7 @@ public class consoleMenu {
 		}else {
 			error("Not connected to a server");
 		}
-		
+
 	}
 
 	private static void FTPlogout() {
@@ -1330,7 +1305,7 @@ public class consoleMenu {
 	}
 
 	private static long FTPfileSize = 0;
-	
+
 	private static CopyStreamListener createListener(){
         return new CopyStreamListener(){
             private long megsTotal = 0;
@@ -1349,8 +1324,13 @@ public class consoleMenu {
                 megsTotal = megs;
             }
         };
+        
+        
     }
 	
+	public static void main(String[] args) {
+		consoleMenu consolemenu = new consoleMenu();
+		consolemenu.start();
+	}
+
 }
-
-

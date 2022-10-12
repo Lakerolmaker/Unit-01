@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="874.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controler">
+   <children>
+      <ImageView fitHeight="72.0" fitWidth="71.0" layoutX="55.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/beige.jpg" />
+         </image>
+      </ImageView>
+      <Button id="green" fx:id="button1" defaultButton="true" layoutX="23.0" layoutY="244.0" mnemonicParsing="false" onAction="#buttonCallback" prefHeight="48.0" prefWidth="200.0" text="Click me" textAlignment="CENTER" />
+      <ProgressBar id="progressbar" fx:id="progressbar1" layoutX="23.0" layoutY="318.0" prefWidth="200.0" progress="0.0" />
+      <ImageView id="img1" fx:id="img1" fitHeight="64.0" fitWidth="64.0" layoutX="59.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="input" layoutX="23.0" layoutY="157.0" prefHeight="48.0" prefWidth="200.0" promptText="Value" />
+      <LineChart fx:id="chart" createSymbols="false" layoutX="263.0" layoutY="76.0" title="data">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" startMargin="1.0" tickLabelGap="8.0" tickLabelsVisible="false" tickMarkVisible="false" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" side="LEFT" tickUnit="10.0" />
+        </yAxis>
+      </LineChart>
+   </children>
+</Pane>

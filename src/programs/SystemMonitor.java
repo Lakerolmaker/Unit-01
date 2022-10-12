@@ -32,13 +32,13 @@ public class SystemMonitor {
 				"Operating System",
                	};
 		
-		String computerName = $.computer.getComputerName();
+		String computerName = $.system.info.getComputerName();
 		Object[][] data1 = {
 			    {"Computer :" , computerName},
-			    {"Operating System" , $.computer.getOSname()},
-			    {"Operating Version" , $.computer.getOSversion()},
-			    {"Operating Arch" , $.computer.getOsArch()},
-			    {"Atached Monitors" , $.computer.getNumberOfDisplays()},  
+			    {"Operating System" , $.system.info.getOSname()},
+			    {"Operating Version" , $.system.info.getOSversion()},
+			    {"Operating Arch" , $.system.info.getOsArch()},
+			    {"Atached Monitors" , $.system.info.getNumberOfDisplays()},  
 			};
 		
 		frame1.addGridTable("Computer Info", 150, 10, 250 , 80,  data1 , columnNames1);
@@ -96,7 +96,7 @@ public class SystemMonitor {
 		frame1.addPogressbar("RamUsage", 45, 10, 15, 200, false, 0, 100);
 		frame1.progressbar.setOrientation("RamUsage", 1);
 		
-		String ramAmout = Long.toString($.computer.getTotallRam()) + " GB";
+		String ramAmout = Long.toString($.system.info.getTotallRam()) + " GB";
 		frame1.addLabel("ramAmout", ramAmout , 9 , 116, 50, 10);
 		
 		
@@ -109,15 +109,15 @@ public class SystemMonitor {
 		
 		//: updates the ram usage every second
 		$.time.setInterval("system monitor_meme" , 0, 1000, ()->{
-			int usedMem = (int) $.computer.getUsedMem();
-			int totallMem = (int) $.computer.getVMTotalMem();
+			int usedMem = (int) $.system.info.getUsedMem();
+			int totallMem = (int) $.system.info.getVMTotalMem();
 			int memProcentage = totallMem/usedMem;
 			frame1.updateProgressbar("RamUsage", memProcentage );
 		});
 		
 		//: updates the CPU usage every second
 		$.time.setInterval("system monitor_cpu",0, 1000, ()->{
-			int cpuLoad = (int)($.computer.cpuLoad() * 100);
+			int cpuLoad = (int)($.system.info.cpuLoad() * 100);
 			frame1.updateProgressbar("cpuLoad", cpuLoad);
 		});
 		
@@ -133,23 +133,23 @@ public class SystemMonitor {
 		
 		int lenght = 0;
 		
-		for(int i = 0 ; i < $.computer.getAmountOfDrives(); i++) {
+		for(int i = 0 ; i < $.system.info.getAmountOfDrives(); i++) {
 		
-			if($.computer.getNormalDisk(i) == true) {
+			if($.system.info.getNormalDisk(i) == true) {
 			
 			UI createdUI = new UI("DriveFrame" + i , "", lenght , 0, 80 , 300 , false , false ,false);
 			
 			createdUI.addPogressbar("progress", 30, 55, 15, 200, false, 0, 100);
 			createdUI.progressbar.setOrientation("progress", 1);
-			createdUI.updateProgressbar("progress", $.computer.getDiskProcentage(i));
+			createdUI.updateProgressbar("progress", $.system.info.getDiskProcentage(i));
 			
 			String name1 = "label1" + i;
-			createdUI.addLabel(	name1, "Disk : " + $.computer.getDiskname(i) , 10, 10, 60, 20);
+			createdUI.addLabel(	name1, "Disk : " + $.system.info.getDiskname(i) , 10, 10, 60, 20);
 			createdUI.label.setborder(name1 , border.loweredbevel);
 			createdUI.label.setFontFamliy(name1 , Font.SANS_SERIF);
 			
 			String name2 = "label2" + i;
-			String text = Integer.toString($.computer.getDiskProcentage(i));
+			String text = Integer.toString($.system.info.getDiskProcentage(i));
 			createdUI.addLabel( name2 , text , 10, 150, 20, 20);
 			
 			diskFrames.add(createdUI);
@@ -169,7 +169,7 @@ public class SystemMonitor {
 				createdUI.label.setFontFamliy(name2 , Font.SANS_SERIF);
 				
 				String name3 = "label3" + i;
-				createdUI.addLabel(	name3, $.computer.getDiskname(i) , 10, 55, 60, 20);
+				createdUI.addLabel(	name3, $.system.info.getDiskname(i) , 10, 55, 60, 20);
 				createdUI.label.setborder(name3 , border.loweredbevel);
 				createdUI.label.setFontFamliy(name3 , Font.SANS_SERIF);
 				

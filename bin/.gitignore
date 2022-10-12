@@ -1,15 +1,8 @@
-/APP/
-/Da_vinci_sleep/
-/Functions/
-/GameEngine/
 /LakerLibrary/
-/TCP (1)/
-/UILibrary/
-/application/
-/consoleWindow/
-/encryption/
-/images/
-/programs/
+/console_external/
 /programs_console/
-/sms/
-/TCP/
+/UILibrary/
+/encryption/
+/volume_mixer/
+/APP/
+/programs/

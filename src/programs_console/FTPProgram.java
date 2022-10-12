@@ -242,8 +242,8 @@ public final class FTPProgram
 	}
 	
 	private static void turnOff() {
-		console.external.removeEnterEvent("preventBackSpace");
-		console.external.removeEnterEvent("consoleFTPMain");
+		console.external.removeKeydownEvent("preventBackSpace");
+		console.external.removeKeydownEvent("consoleFTPMain");
 	}
 
 	private static void turnOn() {

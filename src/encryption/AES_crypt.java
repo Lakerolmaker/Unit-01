@@ -9,18 +9,13 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-import sun.security.krb5.internal.PAData.SaltAndParams;
 
 
 
 public class AES_crypt {
 
-	private static String key = "Bar12345Bar12345"; // 128 bit key
-    private static String initVector = "RandomInitVector"; // 16 bytes IV
+	public static String key = "Bar12345Bar12345"; // 128 bit key
+    private static String initVector = "@^WC4@cy780l"; // 16 bytes IV
 	
     public static String encrypt(String value) {
         try {

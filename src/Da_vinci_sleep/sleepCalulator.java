@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import LakerLibrary.$;
 import LakerLibrary.console;
-import consoleWindow.consoleFX;
+import console_external.consoleFX;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
@@ -29,7 +29,7 @@ import javafx.scene.layout.Region;
 
 
 public class sleepCalulator extends Application {
-	
+		
 	public static Stage window;
 	
 	public TextField normalhours;
@@ -114,7 +114,7 @@ public class sleepCalulator extends Application {
 		double x = window.getX() + 230;
 		double y = window.getY();
 		
-		console.external.open(x, y);
+		console.external.display(x, y);
 		console.external.print("Stats for using davince sleep for " + days + " days, sleeping " + normalAmoutPerDay  +" hours per night : ");
 		console.external.print("Number of naps : " + timesAsleap);
 		console.external.print("Totall time aleep : " + minutesAsleep + " min" + " | " + hoursAsleep+ " hours");

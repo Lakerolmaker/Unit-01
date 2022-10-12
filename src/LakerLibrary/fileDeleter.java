@@ -3,8 +3,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 
-import consoleWindow.runnableConsole;
-import sun.applet.Main;
+import console_external.runnableConsole;
+
 
 public class fileDeleter {
 	
@@ -21,7 +21,7 @@ public class fileDeleter {
 	
 		deleteLimit = bytes * 1048576;
 
-		console.external.openStandalone(new runnableConsole() {
+		console.external.displayStandalone(null, new runnableConsole() {
 			
 			@Override
 			public void run() {
